@@ -1,0 +1,157 @@
+{
+  "track": "Consulting",
+  "version": "v1",
+  "mcq_time_limit_seconds": 600,
+  "written_time_limit_seconds": 480,
+  "weights": {
+    "speed": 15,
+    "analytical": 40,
+    "communication": 35,
+    "behavioral": 10
+  },
+  "analytical": [
+    {
+      "id": "A1",
+      "prompt": "A cafe sells 200 cups of coffee a day at Rs 120 each. Variable cost is Rs 45 per cup and fixed costs are Rs 9,00,000 a year. Roughly how many cups a day must it sell to break even? (Assume 300 operating days.)",
+      "options": [
+        "About 20 cups a day",
+        "About 40 cups a day",
+        "About 75 cups a day",
+        "About 110 cups a day"
+      ],
+      "answer": 1,
+      "explain": "Contribution per cup = 120 - 45 = Rs 75. Annual fixed cost / contribution = 9,00,000 / 75 = 12,000 cups a year. Over 300 days that is 40 cups a day."
+    },
+    {
+      "id": "A2",
+      "prompt": "A client's revenue grew 10% but profit fell 15%. Which single line of enquiry is the most efficient first step?",
+      "options": [
+        "Interview the sales team about customer satisfaction",
+        "Break profit into revenue and cost, then isolate which cost line grew faster than revenue",
+        "Benchmark the client against three competitors",
+        "Recommend an immediate price increase to restore margin"
+      ],
+      "answer": 1,
+      "explain": "Profit = revenue - cost. Revenue is already known to have risen, so the fall must sit in costs. Decomposing first narrows the search before any external work."
+    },
+    {
+      "id": "A3",
+      "prompt": "Estimate the number of school buses operating in Bengaluru on a weekday. Which approach is the most defensible?",
+      "options": [
+        "Recall a figure from a news article",
+        "Take the city population, estimate school-age share, estimate the share bussed, then divide by seats per bus",
+        "Count the buses visible on one main road and multiply by the number of roads",
+        "Assume one bus per school and estimate the number of schools"
+      ],
+      "answer": 1,
+      "explain": "A market-sizing question rewards a transparent chain of assumptions from a known anchor. The population-down approach can be checked and adjusted at every step."
+    },
+    {
+      "id": "A4",
+      "prompt": "A retailer has four stores. Three earn a 12% margin; the fourth loses money. Closing it would cut total revenue by 20%. What should be checked before recommending closure?",
+      "options": [
+        "Whether the staff can be redeployed",
+        "Whether the store covers its own variable costs and contributes to shared fixed costs",
+        "Whether the landlord will renegotiate",
+        "Whether competitors have closed nearby stores"
+      ],
+      "answer": 1,
+      "explain": "A store that is loss-making after allocated fixed costs may still contribute positively. If it covers variable costs and part of the shared overhead, closing it can make total profit worse."
+    },
+    {
+      "id": "A5",
+      "prompt": "Two factories produce the same part. Factory A has higher unit cost but half the defect rate. Which comparison is most relevant?",
+      "options": [
+        "Unit cost alone",
+        "Defect rate alone",
+        "Total cost per good unit delivered, including rework and returns",
+        "The factory with newer machinery"
+      ],
+      "answer": 2,
+      "explain": "The decision-relevant metric is cost per usable output, not cost per unit produced. Defects carry rework, scrap and warranty costs that belong in the comparison."
+    },
+    {
+      "id": "A6",
+      "prompt": "A subscription business reports 5% monthly churn. Roughly what share of a cohort remains after 12 months?",
+      "options": [
+        "About 40%",
+        "About 54%",
+        "About 70%",
+        "About 85%"
+      ],
+      "answer": 1,
+      "explain": "0.95 to the power 12 is about 0.54, so a little over half the cohort remains. Multiplying 5% by 12 and subtracting is the common error."
+    },
+    {
+      "id": "A7",
+      "prompt": "You are given four data sets and two days. Which is the strongest reason to start with the smallest one?",
+      "options": [
+        "It is faster to open",
+        "It most likely contains the answer",
+        "It lets you test the shape of the hypothesis cheaply before committing time to the large sets",
+        "Small data sets are more accurate"
+      ],
+      "answer": 2,
+      "explain": "Early cheap tests of a hypothesis reduce wasted effort. The point is sequencing work by information gained per hour, not by data size itself."
+    },
+    {
+      "id": "A8",
+      "prompt": "A client asks whether to enter a new market. Which structure covers the question most completely?",
+      "options": [
+        "Market size, competition, our capability, economics of entry",
+        "Revenue, cost, profit",
+        "Strengths, weaknesses, opportunities, threats",
+        "Customers, suppliers, regulators"
+      ],
+      "answer": 0,
+      "explain": "The entry question needs attractiveness (size and competition), fit (capability) and the financial case (economics). The other frames either omit fit or are too generic to drive analysis."
+    }
+  ],
+  "behavioral": [
+    {
+      "id": "B1",
+      "prompt": "Two days before a client deadline you find an error in your own analysis that changes the recommendation. What do you do?",
+      "options": [
+        "Fix it quietly and present the corrected version without mentioning the error",
+        "Tell your manager immediately with the corrected numbers and the impact on the recommendation",
+        "Flag it after the presentation to avoid disrupting the team",
+        "Keep the original since the deadline is close and the difference may be small"
+      ],
+      "answer": 1,
+      "explain": "Raising it early with the corrected numbers and the consequence gives the team time to act. Ownership plus a proposed fix is the expected behaviour."
+    },
+    {
+      "id": "B2",
+      "prompt": "A teammate consistently delivers late, which is putting your section at risk. What is the best first step?",
+      "options": [
+        "Escalate to the manager straight away",
+        "Take over their work yourself",
+        "Speak to them directly about the deadline impact and agree a plan",
+        "Reduce the scope of your own section to compensate"
+      ],
+      "answer": 2,
+      "explain": "A direct, specific conversation about impact comes first. Escalation stays available if the agreed plan fails, but skipping the conversation damages the working relationship."
+    }
+  ],
+  "written": {
+    "id": "W1",
+    "prompt": "A mid-sized Bengaluru restaurant chain with eight outlets has seen footfall drop 18% over the past year, while its delivery orders rose 25%. Overall revenue is flat and profit is down. The owner asks whether to close two of the weakest outlets and move to a delivery-first model.\n\nIn 150-250 words, give your recommendation. State your answer first, then your reasoning, then what evidence would change your mind.",
+    "rubric": {
+      "structure": "States a clear recommendation up front, then supports it with ordered reasoning rather than narrating thoughts.",
+      "specificity": "Uses the numbers given, or names concrete costs, segments or actions, rather than staying general.",
+      "clarity": "Readable sentences of moderate length, little filler, direct phrasing.",
+      "coverage": "Engages with the real tension: delivery margin versus dine-in contribution, fixed costs of outlets, brand and capacity effects.",
+      "falsifiability": "Names specific evidence that would change the recommendation."
+    },
+    "coverage_terms": [
+      "margin", "delivery", "fixed cost", "rent", "contribution", "footfall",
+      "commission", "aggregator", "capacity", "brand", "dine-in", "kitchen",
+      "variable", "breakeven", "break-even", "lease", "staff", "cannibalis",
+      "cannibaliz", "unit economics", "per outlet", "per-outlet"
+    ],
+    "falsifiability_terms": [
+      "if ", "would change", "depends on", "unless", "evidence", "data",
+      "assuming", "provided that", "test", "pilot", "check whether"
+    ]
+  }
+}

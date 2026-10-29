@@ -1,0 +1,35 @@
+# Optional. `docker compose up` instead of a long `docker run` line.
+#
+# The second service, "app2", is commented out. Uncomment it when you want to
+# demonstrate running two instances of the same image side by side.
+
+services:
+  app:
+    build: .
+    image: hireassess:latest
+    container_name: hireassess
+    ports:
+      - "8000:8000"
+    volumes:
+      - assessment-data:/data
+    environment:
+      COMPANY_PASSCODE: partner2026
+      REVIEWER_PASSCODE: reviewer2026
+      SECRET_KEY: change-me-before-any-real-use
+      # Uncomment to move scorecards to Azure Blob Storage:
+      # AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=..."
+      # Uncomment to switch on AI-assisted pre-scoring:
+      # GEMINI_API_KEY: "your-key"
+    restart: unless-stopped
+
+  # app2:
+  #   image: hireassess:latest
+  #   container_name: hireassess-2
+  #   ports:
+  #     - "8001:8000"
+  #   volumes:
+  #     - assessment-data:/data
+  #   restart: unless-stopped
+
+volumes:
+  assessment-data:
