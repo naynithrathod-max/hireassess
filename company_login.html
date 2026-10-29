@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Hiring partner sign in{% endblock %}
+{% block body %}
+
+<h1>Hiring partner portal</h1>
+<p class="lede">Sign in to see the scorecards of candidates who have consented to share.</p>
+
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+<form method="post" class="card" style="max-width:420px">
+  <label class="field">
+    <span>Partner passcode</span>
+    <input type="text" name="passcode" autofocus>
+  </label>
+  <button class="btn" type="submit">Sign in</button>
+  <p class="muted" style="margin-bottom:0">
+    Demo passcode: <code>partner2026</code>
+  </p>
+</form>
+
+{% endblock %}

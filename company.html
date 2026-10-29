@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Candidate pool{% endblock %}
+{% block wrapclass %}wide{% endblock %}
+{% block body %}
+
+<h1>Candidate pool</h1>
+<p class="lede">
+  Candidates at or above your score threshold who have consented to share.
+  Set the threshold to the point at which you would waive your own first round.
+</p>
+
+<div class="card">
+  <form method="get" class="filterbar">
+    <label class="field">
+      <span>Score threshold</span>
+      <input type="number" name="threshold" value="{{ threshold }}" min="0" max="100" step="1">
+    </label>
+    <button class="btn small" type="submit">Apply</button>
+    <div class="muted" style="margin-left:auto">
+      {{ rows|length }} candidate{{ 's' if rows|length != 1 }} shown &middot;
+      {{ withheld }} withheld for lack of consent
+    </div>
+  </form>
+
+  <table>
+    <tr>
+      <th>Candidate</th><th>College</th>
+      <th class="num">Speed</th><th class="num">Analytical</th>
+      <th class="num">Comms</th><th class="num">Behav.</th>
+      <th class="num">Overall</th><th>Band</th><th>Review</th>
+    </tr>
+    {% for r in rows %}
+    <tr>
+      <td>
+        <b>{{ r.name }}</b>
+        {% if r.is_seed %}<br><span class="muted">synthetic cohort</span>{% endif %}
+      </td>
+      <td class="muted">{{ r.college }}</td>
+      <td class="num">{{ r.speed_score }}</td>
+      <td class="num">{{ r.analytical_score }}</td>
+      <td class="num">{{ r.comm_score }}</td>
+      <td class="num">{{ r.behavioural_score }}</td>
+      <td class="num"><b>{{ r.final_score }}</b></td>
+      <td>
+        <span class="pill {% if r.final_score >= 60 %}good{% elif r.final_score >= 45 %}warn{% else %}bad{% endif %}">{{ band(r.final_score) }}</span>
+      </td>
+      <td>
+        {% if r.reviewed %}<span class="muted">confirmed</span>
+        {% else %}<span class="pill warn">pending</span>{% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="9" class="muted">No consented candidates at this threshold.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="notice">
+  <b>{{ withheld }} completed scorecard{{ 's are' if withheld != 1 else ' is' }} hidden
+  from this view</b> because those candidates did not consent to share. They are
+  excluded at the database query, not filtered in the page, so this portal never
+  receives their data.
+</div>
+
+<p class="muted">
+  Email addresses and written answers are never exposed to hiring partners.
+  <a href="{{ url_for('company_logout') }}">Sign out</a>
+</p>
+
+{% endblock %}

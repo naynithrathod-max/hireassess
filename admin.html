@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}System{% endblock %}
+{% block body %}
+
+<h1>System</h1>
+<p class="lede">
+  What is serving this request, where the data is going, and which optional
+  services are switched on. This page is the one to show when explaining the
+  architecture.
+</p>
+
+<div class="card">
+  <h3>This request was served by</h3>
+  <table>
+    <tr><td>Container / host name</td><td><code>{{ container_id }}</code></td></tr>
+    <tr><td>Scorecard storage backend</td><td><code>{{ storage_backend }}</code></td></tr>
+  </table>
+  <p class="muted" style="margin-bottom:0">
+    Run two containers behind a load balancer and refresh this page: the host name
+    changes as requests are spread across them. That is horizontal scaling in one
+    observable fact.
+  </p>
+</div>
+
+<div class="card">
+  <h3>Configuration</h3>
+  <table>
+    {% for key, value in env_flags.items() %}
+    <tr><td><code>{{ key }}</code></td><td>{{ value }}</td></tr>
+    {% endfor %}
+  </table>
+  <p class="muted" style="margin-bottom:0">
+    Nothing here is baked into the image. Each value is an environment variable
+    supplied at run time, which is why the same image runs unchanged on a laptop,
+    in a VirtualBox VM and on a cloud VM.
+  </p>
+</div>
+
+<div class="card">
+  <h3>Completed attempts</h3>
+  <table>
+    <tr><td>Total scorecards</td><td class="num">{{ stats.total or 0 }}</td></tr>
+    <tr><td>Real attempts (excluding synthetic cohort)</td><td class="num">{{ stats.real_attempts or 0 }}</td></tr>
+    <tr><td>Consented to share</td><td class="num">{{ stats.consented or 0 }}</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Objects in the scorecard store</h3>
+  {% if objects %}
+  <table>
+    {% for o in objects %}<tr><td><code>{{ o }}</code></td></tr>{% endfor %}
+  </table>
+  {% else %}
+  <p class="muted" style="margin:0">
+    No scorecards written yet. Complete an attempt and one object appears here.
+  </p>
+  {% endif %}
+</div>
+
+<p class="muted">
+  Health endpoint for load balancers and the container health check:
+  <a href="{{ url_for('health') }}"><code>/health</code></a>
+</p>
+
+{% endblock %}

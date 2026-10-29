@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Round 1 &mdash; Analytical{% endblock %}
+{% block body %}
+
+<div class="timerbar">
+  <div>
+    <div class="timer-label">Time remaining</div>
+    <div class="timer" id="timer">--:--</div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="muted" id="switches" style="min-width:150px"></div>
+</div>
+
+<h1>Round 1 &mdash; Analytical &amp; behavioural</h1>
+<p class="lede">
+  {{ analytical|length }} analytical questions and {{ behavioural|length }} situational
+  questions. The paper submits itself when the timer reaches zero, and partial
+  answers still count.
+</p>
+
+<div class="notice calm">
+  This round is proctored in a light way: switching away from this tab is counted
+  and shown to the human reviewer. It is recorded, not punished automatically.
+</div>
+
+<form method="post" id="testform" class="card">
+  <input type="hidden" name="tab_switches" id="tab_switches" value="0">
+
+  <h3>Analytical</h3>
+  {% for q in analytical %}
+  <div class="q">
+    <div class="qnum">Question {{ loop.index }}</div>
+    <div class="qtext">{{ q.prompt }}</div>
+    {% for opt in q.options %}
+    <label class="opt">
+      <input type="radio" name="{{ q.id }}" value="{{ loop.index0 }}">
+      <span>{{ opt }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+  <h3 style="margin-top:34px">Situational judgment</h3>
+  {% for q in behavioural %}
+  <div class="q">
+    <div class="qnum">Question {{ analytical|length + loop.index }}</div>
+    <div class="qtext">{{ q.prompt }}</div>
+    {% for opt in q.options %}
+    <label class="opt">
+      <input type="radio" name="{{ q.id }}" value="{{ loop.index0 }}">
+      <span>{{ opt }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+  <p style="margin-top:26px"><button class="btn" type="submit">Submit and continue to the written round</button></p>
+</form>
+
+<script>
+(function () {
+  var total = {{ limit }};
+  var left = total;
+  var timerEl = document.getElementById('timer');
+  var barEl = document.getElementById('bar');
+  var form = document.getElementById('testform');
+  var submitted = false;
+
+  function paint() {
+    var m = Math.floor(Math.max(left, 0) / 60);
+    var s = Math.max(left, 0) % 60;
+    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    barEl.style.width = Math.max(0, (left / total) * 100) + '%';
+    if (left <= 60) { timerEl.classList.add('low'); }
+  }
+
+  paint();
+  var tick = setInterval(function () {
+    left -= 1;
+    paint();
+    if (left <= 0 && !submitted) {
+      submitted = true;
+      clearInterval(tick);
+      form.submit();
+    }
+  }, 1000);
+
+  form.addEventListener('submit', function () { submitted = true; });
+
+  // Light proctoring: count how often the candidate leaves this tab.
+  var switches = 0;
+  var swEl = document.getElementById('switches');
+  var hiddenInput = document.getElementById('tab_switches');
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      switches += 1;
+      hiddenInput.value = switches;
+      swEl.textContent = switches === 1
+        ? '1 tab switch recorded'
+        : switches + ' tab switches recorded';
+    }
+  });
+})();
+</script>
+
+{% endblock %}

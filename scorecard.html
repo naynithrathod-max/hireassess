@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Scorecard{% endblock %}
+{% block body %}
+
+<h1>Scorecard</h1>
+<p class="lede">{{ attempt.name }} &middot; {{ attempt.college }}</p>
+
+<div class="card">
+  <div class="headline">
+    <div>
+      <div class="bigscore">{{ attempt.final_score }}</div>
+      <div class="muted">out of 100</div>
+    </div>
+    <div>
+      <span class="pill {% if attempt.final_score >= 60 %}good{% elif attempt.final_score >= 45 %}warn{% else %}bad{% endif %}">{{ band }}</span>
+      {% if percentile is not none %}
+      <div class="muted" style="margin-top:6px">
+        Higher than {{ percentile }}% of the reference cohort
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% for name, value in parts.items() %}
+  <div class="rowscore">
+    <div class="top">
+      <span class="name">{{ name }}</span>
+      <span class="val">{{ value }}&nbsp;/&nbsp;100</span>
+    </div>
+    <div class="meter"><i style="width: {{ value }}%"></i></div>
+  </div>
+  {% endfor %}
+
+  {% if penalty > 0 %}
+  <div class="notice" style="margin-top:18px; margin-bottom:0">
+    An integrity adjustment of {{ penalty }} points was applied for
+    {{ attempt.tab_switches }} tab switch{{ 'es' if attempt.tab_switches != 1 }}
+    during the timed round. A human reviewer can remove this.
+  </div>
+  {% endif %}
+</div>
+
+<div class="twocol">
+  <div class="card">
+    <h3>Strengths</h3>
+    <ul class="plain">{% for s in strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+  </div>
+  <div class="card">
+    <h3>Development areas</h3>
+    {% if gaps %}
+    <ul class="plain">{% for g in gaps %}<li>{{ g }}</li>{% endfor %}</ul>
+    {% else %}
+    <p class="muted" style="margin:0">No round fell below the development threshold.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% if breakdown %}
+<h2>Written round, criterion by criterion</h2>
+<div class="card">
+  <table>
+    <tr><th>Criterion</th><th>What it looks for</th><th class="num">Score</th></tr>
+    {% for key, value in breakdown.items() %}
+    <tr>
+      <td><b>{{ key|capitalize }}</b></td>
+      <td class="muted">{{ rubric.get(key, '') }}</td>
+      <td class="num">{{ value }} / 5</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="muted" style="margin-bottom:0; margin-top:14px">
+    Scoring engine: <code>{{ attempt.comm_engine }}</code>.
+    {% if attempt.reviewed %}Confirmed by a human reviewer.
+    {% else %}Awaiting human review before it is shared with any company.{% endif %}
+    {% if attempt.comm_note %}<br>Reviewer comment: {{ attempt.comm_note }}{% endif %}
+  </p>
+</div>
+{% endif %}
+
+<h2>Sharing</h2>
+<div class="card">
+  {% if attempt.consent %}
+  <p style="margin-top:0">
+    <span class="pill good">Sharing is on</span>
+    Partner companies can see this scorecard, without your email or written answer.
+  </p>
+  <form method="post" action="{{ url_for('toggle_consent', attempt_id=attempt.id) }}">
+    <button class="btn ghost small" type="submit">Withdraw consent</button>
+  </form>
+  {% else %}
+  <p style="margin-top:0">
+    <span class="pill flat">Sharing is off</span>
+    No company can see this scorecard. It is yours alone.
+  </p>
+  <form method="post" action="{{ url_for('toggle_consent', attempt_id=attempt.id) }}">
+    <button class="btn small" type="submit">Share with partner companies</button>
+  </form>
+  {% endif %}
+  <p class="muted" style="margin-bottom:0; margin-top:14px">
+    Scorecard object written to <code>{{ attempt.storage_location }}</code>
+  </p>
+</div>
+
+<p class="muted" style="margin-top:22px">
+  Keep this link to return to your scorecard:
+  <code>/scorecard/{{ attempt.id }}</code>
+</p>
+
+{% endblock %}

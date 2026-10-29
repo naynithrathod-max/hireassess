@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Standardized Hiring Assessment{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233d4ed8'/><text y='70' x='50' text-anchor='middle' font-size='58' fill='white' font-family='sans-serif' font-weight='bold'>S</text></svg>">
+</head>
+<body>
+<header class="bar">
+  <div class="inner">
+    <a class="logo" href="{{ url_for('index') }}">
+      <span class="mark">S</span> Standardized Hiring Assessment
+    </a>
+    <nav>
+      <a href="{{ url_for('company') }}">Company portal</a>
+      <a href="{{ url_for('reviewer') }}">Reviewer</a>
+      <a href="{{ url_for('admin_info') }}">System</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap {% block wrapclass %}{% endblock %}">
+  {% block body %}{% endblock %}
+
+  <footer class="foot">
+    <span>Prototype &mdash; synthetic data only</span>
+    <span>Served by <code>{{ container_id }}</code></span>
+    <span>Storage: <code>{{ storage_backend }}</code></span>
+  </footer>
+</div>
+</body>
+</html>

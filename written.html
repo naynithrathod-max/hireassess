@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Round 2 &mdash; Communication{% endblock %}
+{% block body %}
+
+<div class="timerbar">
+  <div>
+    <div class="timer-label">Time remaining</div>
+    <div class="timer" id="timer">--:--</div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+  <div class="muted" id="wc" style="min-width:110px">0 words</div>
+</div>
+
+<h1>Round 2 &mdash; Written communication</h1>
+
+<div class="card">
+  <h3>The case</h3>
+  <div class="qtext" style="font-weight:400">{{ spec.prompt }}</div>
+</div>
+
+<div class="card tight">
+  <h3>How this is scored</h3>
+  <ul class="plain" style="font-size:14.5px">
+    {% for key, text in spec.rubric.items() %}
+    <li><b>{{ key|capitalize }}</b> &mdash; {{ text }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<form method="post" id="wform" class="card">
+  <label class="field">
+    <span>Your answer</span>
+    <textarea name="answer" id="answer" placeholder="State your recommendation first, then your reasoning, then what would change your mind."></textarea>
+  </label>
+  <button class="btn" type="submit">Submit and see my scorecard</button>
+</form>
+
+<script>
+(function () {
+  var total = {{ limit }};
+  var left = total;
+  var timerEl = document.getElementById('timer');
+  var barEl = document.getElementById('bar');
+  var form = document.getElementById('wform');
+  var area = document.getElementById('answer');
+  var wc = document.getElementById('wc');
+  var submitted = false;
+
+  function paint() {
+    var m = Math.floor(Math.max(left, 0) / 60);
+    var s = Math.max(left, 0) % 60;
+    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    barEl.style.width = Math.max(0, (left / total) * 100) + '%';
+    if (left <= 60) { timerEl.classList.add('low'); }
+  }
+  paint();
+  var tick = setInterval(function () {
+    left -= 1; paint();
+    if (left <= 0 && !submitted) { submitted = true; clearInterval(tick); form.submit(); }
+  }, 1000);
+  form.addEventListener('submit', function () { submitted = true; });
+
+  function count() {
+    var n = (area.value.trim().match(/[^\s]+/g) || []).length;
+    wc.textContent = n + (n === 1 ? ' word' : ' words');
+  }
+  area.addEventListener('input', count);
+  count();
+})();
+</script>
+
+{% endblock %}

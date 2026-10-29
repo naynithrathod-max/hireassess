@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h1>One assessment. Every partner company.</h1>
+<p class="lede">
+  Instead of sitting five separate company screening processes, a final-year student
+  writes one standardized, multi-round assessment. The score report goes to partner
+  companies, who use it to shortlist or to waive parts of their own screening.
+</p>
+
+<div class="steps">
+  <div class="step"><b>Step 1</b> Register and give consent</div>
+  <div class="step"><b>Step 2</b> Timed analytical round</div>
+  <div class="step"><b>Step 3</b> Written communication round</div>
+  <div class="step"><b>Step 4</b> Scorecard and percentile</div>
+</div>
+
+<p><a class="btn" href="{{ url_for('register') }}">Start the assessment</a>
+   <a class="btn ghost" href="{{ url_for('company') }}">I'm a hiring partner</a></p>
+
+<h2>What this version tests</h2>
+<div class="card">
+  <table>
+    <tr><th>Round</th><th>What it tests</th><th class="num">Weight</th></tr>
+    <tr>
+      <td>Speed &amp; working ability</td>
+      <td>Completion under time pressure</td>
+      <td class="num">{{ bank.weights.speed }}%</td>
+    </tr>
+    <tr>
+      <td>Analytical</td>
+      <td>Case-style reasoning, structured problem-solving, market sizing</td>
+      <td class="num">{{ bank.weights.analytical }}%</td>
+    </tr>
+    <tr>
+      <td>Communication</td>
+      <td>Written clarity and structuring an argument</td>
+      <td class="num">{{ bank.weights.communication }}%</td>
+    </tr>
+    <tr>
+      <td>Behavioural</td>
+      <td>Situational judgment: ownership and teamwork</td>
+      <td class="num">{{ bank.weights.behavioral }}%</td>
+    </tr>
+  </table>
+</div>
+<p class="muted">
+  Track: {{ bank.track }} ({{ bank.version }}). Weights are a starting hypothesis and
+  would be re-fitted once real hiring outcomes are available.
+</p>
+
+<h2>How scores are produced</h2>
+<div class="card">
+  <p style="margin-top:0">
+    The analytical and behavioural rounds are scored against a fixed answer key.
+    The written round is scored against a five-criterion rubric, and a human
+    reviewer confirms or overrides every rubric score before it reaches a company.
+    No score is shared with any company unless the candidate has consented.
+  </p>
+  <p class="muted" style="margin-bottom:0">
+    This prototype ships with a synthetic reference cohort so that percentiles are
+    meaningful from the first attempt. Those rows are labelled as synthetic
+    throughout.
+  </p>
+</div>
+
+{% endblock %}

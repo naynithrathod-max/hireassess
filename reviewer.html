@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Review queue{% endblock %}
+{% block wrapclass %}wide{% endblock %}
+{% block body %}
+
+<h1>Review queue</h1>
+<p class="lede">
+  Read the answer, check the rubric score, and confirm or override it. The overall
+  score is recalculated the moment you save.
+</p>
+
+{% for r in rows %}
+<div class="card">
+  <div class="headline" style="margin-bottom:14px; padding-bottom:12px">
+    <div>
+      <b style="font-size:18px">{{ r.name }}</b>
+      <div class="muted">{{ r.college }} &middot; attempt <code>{{ r.id }}</code></div>
+    </div>
+    <div style="margin-left:auto">
+      {% if r.reviewed %}
+        <span class="pill good">Confirmed</span>
+      {% else %}
+        <span class="pill warn">Pending review</span>
+      {% endif %}
+      {% if r.tab_switches %}
+        <span class="pill bad">{{ r.tab_switches }} tab switch{{ 'es' if r.tab_switches != 1 }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="twocol">
+    <div>
+      <h3>Candidate's written answer</h3>
+      <div class="answerbox">{{ r.written_text or '(no answer submitted)' }}</div>
+    </div>
+    <div>
+      <h3>Machine rubric score</h3>
+      {% set bd = r.comm_breakdown|from_json %}
+      <table>
+        {% for key, value in bd.items() %}
+        <tr>
+          <td><b>{{ key|capitalize }}</b><br><span class="muted">{{ rubric.get(key,'') }}</span></td>
+          <td class="num">{{ value }} / 5</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <p class="muted">Engine: <code>{{ r.comm_engine }}</code>
+         {% if r.comm_note %}<br>{{ r.comm_note }}{% endif %}</p>
+
+      <form method="post" action="{{ url_for('review_submit', attempt_id=r.id) }}">
+        <label class="field">
+          <span>Communication score (0&ndash;100)</span>
+          <input type="number" name="comm_score" value="{{ r.comm_score }}"
+                 min="0" max="100" step="0.5">
+        </label>
+        <label class="field">
+          <span>Reviewer note (optional)</span>
+          <input type="text" name="reviewer_note" value="{{ r.reviewer_note or '' }}"
+                 placeholder="Why you adjusted the score">
+        </label>
+        <button class="btn small" type="submit">
+          {{ 'Save change' if r.reviewed else 'Confirm and release' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="card muted">
+  No real attempts yet. Take the assessment first and the submission will appear here.
+</div>
+{% endfor %}
+
+{% endblock %}

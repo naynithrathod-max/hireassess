@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block body %}
+
+<h1>Register for the assessment</h1>
+<p class="lede">Takes about 18 minutes in total across two timed rounds.</p>
+
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+<form method="post" class="card">
+  <label class="field">
+    <span>Full name</span>
+    <input type="text" name="name" value="{{ form.get('name','') }}" required autofocus>
+  </label>
+  <label class="field">
+    <span>Email</span>
+    <input type="email" name="email" value="{{ form.get('email','') }}" required>
+  </label>
+  <label class="field">
+    <span>College</span>
+    <input type="text" name="college" value="{{ form.get('college','') }}" required>
+  </label>
+
+  <div class="consent">
+    <input type="checkbox" id="consent" name="consent" value="yes" checked>
+    <label for="consent">
+      <b>I consent to my scorecard being shared with partner companies.</b><br>
+      Partner companies will see my name, college, round scores and percentile.
+      They will not see my email or my written answer. I can withdraw this consent
+      at any time from my scorecard, and my scores are removed from the company
+      view immediately when I do.
+    </label>
+  </div>
+
+  <p class="muted">
+    If you leave this unticked you will still get your own scorecard. Only the
+    sharing stops.
+  </p>
+
+  <button class="btn" type="submit">Begin round 1</button>
+</form>
+
+{% endblock %}
